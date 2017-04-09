@@ -2,8 +2,8 @@ SRC_FILES=$(wildcard *.cpp)
 OBJ_FILES=$(SRC_FILES:%.cpp=../obj/%.o)
 INC_FILES=$(wildcard *.h)
 CC=g++
-CFLAGS=-std=c++11 -Wall
-BIN=../bin/dpll
+CFLAGS=-std=c++11 -Wall -static-libstdc++ -static-libgcc -O3
+BIN=../bin/solver
 
 all: dirs $(BIN)
 
