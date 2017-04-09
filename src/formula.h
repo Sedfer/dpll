@@ -1,6 +1,7 @@
 #include "clause.h"
 
 #include <list>
+#include <fstream>
 
 class Formula
 {
@@ -10,14 +11,16 @@ class Formula
  public:
   Formula();
   Formula(const Formula &f);
+  Formula(std::ifstream &ifs);
 
   int size() const;
-  void add(Clause *c);
   std::list<Clause *>::const_iterator begin() const;
   std::list<Clause *>::const_iterator end() const;
   bool isAnyClauseEmpty() const;
   int chooseVariable() const;
 
+  void readFromFile(std::ifstream &ifs);
+  void add(Clause *c);
   void set(int var);
   bool unitPropagation();
   

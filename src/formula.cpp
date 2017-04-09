@@ -17,6 +17,11 @@ Formula::Formula(const Formula &f)
   }
 }
 
+Formula::Formula(ifstream &ifs) : Formula()
+{
+  this->readFromFile(ifs);
+}
+
 int Formula::size() const
 {
   return myList.size();
@@ -90,4 +95,44 @@ int Formula::chooseVariable() const
   }
 
   return var;
+}
+
+void Formula::readFromFile(ifstream &ifs)
+{
+  string str;
+
+  while(1){
+    ifs >> str;
+    if(str == "c"){
+      getline(ifs, str);
+      continue;
+    }
+
+    if(str == "p"){
+      break;
+    }
+
+    throw nullptr;
+  }
+
+  ifs >> str;
+  if(str != "cnf")
+    throw nullptr;
+
+  int var = 0, clause = 0;
+  ifs >> var >> clause;
+
+  for(int i = 0; i < clause; ++i){
+    Clause *c = new Clause(var);
+    int num;
+    while(true){
+      ifs >> num;
+      if(num == 0)
+	break;
+
+      c->set(num);
+    }
+
+    this->add(c);
+  }
 }
