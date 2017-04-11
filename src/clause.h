@@ -6,6 +6,8 @@ class Clause
   std::vector<bool> p;
   std::vector<bool> n;
 
+  int myCount;
+
  public:
   Clause();
   Clause(int size);

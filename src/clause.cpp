@@ -6,7 +6,7 @@ using namespace std;
 Clause::Clause() : Clause(0)
 { }
 
-Clause::Clause(int size)
+Clause::Clause(int size) : myCount(0)
 {
   p = vector<bool>(size, false);
   n = vector<bool>(size, false);
@@ -27,9 +27,21 @@ void Clause::set(int var, bool value)
   }
 
   if(pos){
+    if(!p[var-1] && value){
+      ++myCount;
+    }
+    if(p[var-1] && !value){
+      --myCount;
+    }
     p[var-1] = value;
   }
   else{
+    if(!n[var-1] && value){
+      ++myCount;
+    }
+    if(n[var-1] && !value){
+      --myCount;
+    }
     n[var-1] = value;
   }
 }
@@ -53,57 +65,33 @@ bool Clause::get(int var) const
 
 bool Clause::isEmpty() const
 {
-  for(bool b : p){
-    if(b) return false;
-  }
-
-  for(bool b : n){
-    if(b) return false;
-  }
-
-  return true;
+  return count() == 0;
 }
 
 int Clause::count() const
 {
-  int res = 0;
-
-  for(bool b : p){
-    res += b;
-  }
-
-  for(bool b : n){
-    res += b;
-  }
-
-  return res;
+  return myCount;
 }
 
 int Clause::findSingle() const
 {
+  if(count() != 1){
+    return 0;
+  }
+  
   int res = 0;
 
   for(int i = 0; i < p.size(); ++i){
-    if(!p[i])
-      continue;
-
-    if(res != 0)
-      return 0;
-
-    res = i + 1;
+    if(p[i])
+      return i + 1;
   }
 
   for(int i = 0; i < n.size(); ++i){
-    if(!n[i])
-      continue;
-
-    if(res != 0)
-      return 0;
-
-    res = -(i + 1);
+    if(n[i])
+      return -(i + 1);
   }
 
-  return res;
+  throw nullptr;
 }
 
 int Clause::chooseVariable() const
