@@ -115,7 +115,7 @@ int Clause::chooseVariable() const
 
   for(int i = 0; i < n.size(); ++i){
     if(n[i])
-      return -(i - 1);
+      return -(i + 1);
   }
 
   return 0;
