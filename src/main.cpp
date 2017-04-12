@@ -57,7 +57,7 @@ bool dpll(Formula &f)
     bool flag = false;
     // return true, if successful; false - if not possible
     flag |= f.unitPropagation();
-    //flag |= f.pureLiteralElimination();
+    flag |= f.pureLiteralElimination();
     if(!flag) break;
   }
 
