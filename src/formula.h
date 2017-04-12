@@ -8,6 +8,8 @@ class Formula
  private:
   std::list<Clause *> myList;
 
+  bool anyEmpty;
+
  public:
   Formula();
   Formula(const Formula &f);

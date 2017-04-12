@@ -2,18 +2,17 @@
 
 using namespace std;
 
-Formula::Formula()
+Formula::Formula() : anyEmpty(false)
 {
   myList = list<Clause *>(0);
 }
 
-Formula::Formula(const Formula &f)
+Formula::Formula(const Formula &f) : Formula()
 {
-  myList = list<Clause *>(0);
-  
   // create new copies of Clauses
   for(Clause *c : f){
     myList.push_back(new Clause(*c));
+    anyEmpty |= c->isEmpty();
   }
 }
 
@@ -30,6 +29,7 @@ int Formula::size() const
 void Formula::add(Clause *c)
 {
   myList.push_back(c);
+  anyEmpty |= c->isEmpty();
 }
 
 list<Clause *>::const_iterator Formula::begin() const
@@ -55,6 +55,7 @@ void Formula::set(int var)
     
     if((*it)->get(-var)){
       (*it)->set(-var, false);
+      anyEmpty |= (*it)->isEmpty();
     }
 
     ++it;
@@ -76,12 +77,7 @@ bool Formula::unitPropagation()
 
 bool Formula::isAnyClauseEmpty() const
 {
-  for(Clause *c : myList){
-    if(c->isEmpty())
-      return true;
-  }
-
-  return false;
+  return anyEmpty;
 }
 
 int Formula::chooseVariable() const
@@ -134,5 +130,6 @@ void Formula::readFromFile(ifstream &ifs)
     }
 
     this->add(c);
+    anyEmpty |= c->isEmpty();
   }
 }
