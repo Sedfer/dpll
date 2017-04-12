@@ -21,6 +21,13 @@ Formula::Formula(ifstream &ifs) : Formula()
   this->readFromFile(ifs);
 }
 
+Formula::~Formula()
+{
+  for(Clause *c : myList){
+    delete c;
+  }
+}
+
 int Formula::size() const
 {
   return myList.size();

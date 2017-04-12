@@ -14,6 +14,7 @@ class Formula
   Formula();
   Formula(const Formula &f);
   Formula(std::ifstream &ifs);
+  ~Formula();
 
   int size() const;
   std::list<Clause *>::const_iterator begin() const;

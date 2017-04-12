@@ -68,11 +68,9 @@ bool dpll(Formula &f)
 
   if(dpll(nF))
     return true;
-  
-  nF = Formula(f);
-  nF.set(-var);
 
-  return dpll(nF);
+  f.set(-var);
+  return dpll(f);
 }
 
 void print(Clause &c)
